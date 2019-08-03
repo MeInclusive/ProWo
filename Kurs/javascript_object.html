@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+	<head>
+		<script>
+			var object = []; //Eine leeres Object
+			//Ein gefülltes Object
+			var object2 = {
+				wert1: 5,
+				wert2: "Hallo",
+				nocheinwert: [1, 2, 3],
+				verschachteltesObject: {
+					a: 1,
+					b: 2
+				}
+			};
+
+			//Um einen Wert aus dem Object auszulesen: object["nameDesWerts"] oder object.nameDesWerts
+			object2["wert1"]; // => 5
+			object2.wert2; // => "Hallo"
+			object2.nocheinwert[0]; // => 1
+
+			object2.wert1 = 17; //Setzt das Element des Objects mit dem Namen wert1 auf 17.
+			/*Das Object sieht nun so aus:
+			{
+				wert1: 17,
+				wert2: "Hallo",
+				nocheinwert: [1, 2, 3],
+				verschachteltesObject: {
+					a: 1,
+					b: 2
+				}
+			}*/
+			//Man kann neue Elemente zu einem Object hinzufügen, indem man einfach so tut, als würden sie bereits existieren:
+			object2.neuerWert = "Ein ganz neuer Wert!";
+			/*Das Object sieht nun so aus:
+			{
+				wert1: 17,
+				wert2: "Hallo",
+				nocheinwert: [1, 2, 3],
+				verschachteltesObject: {
+					a: 1,
+					b: 2
+				},
+				neuerWert: "Ein ganz neuer Wert!"
+			}*/
+			//Es gibt viele nützliche Funktionen für Objects. Einfach mal googlen.
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+	<script>
+		var neuesHtmlElement = document.createElement("div"); //Erstellt ein neues Div
+		document.body.appendChild(neuesHtmlElement); //Schiebt das Div in den Körper des Html
+
+		neuesHtmlElement.style.backgroundColor = "black"; //Setzt die Hintergrundfarbe des Div auf schwarz
+
+		//Canvas
+		var canvas = document.getElementById("canvas");
+		var context = document.getContext("2d"); //über den Context kann man auf dem Canvas etwas darstellen
+
+	</script>
+</head>
+<body>
+	<canvas id="canvas"></canvas>
+
+	Hier würde jetzt ein neues Div Element geschaffen werden:
+	<div></div>
+</body>
+</html>

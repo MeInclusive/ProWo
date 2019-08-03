@@ -1,0 +1,189 @@
+<!doctype html>
+<html>
+<head>
+	<script>
+		class Field {
+			constructor(size, parent, mode) {
+				this.size = size;
+				this.body = document.createElement('table');
+				this.body.id = 'TicTacToe';
+				this.cells = [];
+				this.player = 'X';
+				this.mode = mode;
+				for (var y = 0; y < this.size.y; y++) {
+					var tr = document.createElement('tr');
+					this.cells.push([]);
+					for (var x = 0; x < this.size.x; x++) {
+						this.cells[y].push(document.createElement('td'));
+						this.cells[y][x].className = 'cell';
+						this.cells[y][x].addEventListener('click', this.PlayerTurn.bind(this));
+						tr.appendChild(this.cells[y][x]);
+					}
+					this.body.appendChild(tr);
+				}
+				parent.appendChild(this.body);
+			}
+
+			PlayerTurn(event) {
+				var cell = event.target;
+				if (event.target.innerHTML != '') { return; }
+				event.target.innerHTML = cell.innerHTML == '' ? this.player : event.target.innerHTML;
+				var test = function (array) {
+					for (var i = 0; i < array.length; i++) {
+						if (array[i].innerHTML != this.player) { return false; }
+						if (i >= 3-1) {
+							this.Win(array);
+							return true;
+						}
+					}
+				}.bind(this);
+				for (var y = 0; y < this.cells.length; y++) {
+					test(this.cells[y]);
+				}
+				for (var x = 0, ar = []; x < this.cells[0].length; x++) {
+					for (var y = 0, ar = []; y < this.cells.length; y++) {
+						ar.push(this.cells[y][x])
+					}
+					test(ar);
+				}
+				var ar = [];
+				for (var x = 0; x < this.cells[0].length; x++) {
+					ar.push(this.cells[x][x]);
+				}
+				test(ar);
+					for (var y = 0, ar = []; y < this.cells.length; y++) {
+						ar.push(this.cells[this.cells.length - 1 - y][y]);
+					}
+				test(ar);
+				var a = true;
+				for (var y = 0; y < this.cells.length; y++){
+					for (var x = 0; x < this.cells[y].length; x++) {
+						if (this.cells[y][x].innerHTML == '') { a = false; }
+					}
+				}
+				if (a && !this.complete) { this.Tie(); }
+
+				if (this.mode == 2) {
+					this.player = this.player == 'X' ? 'O': 'X'
+				} else { this.AITurn(); }
+			}
+
+			AITurn() {
+
+			}
+
+			Win(array) {
+				array.forEach(function (el) { el.style.color = '#00ff00'; });
+				this.complete = true;
+				this.Restart(`${this.player} wins!`);
+			}
+
+			Tie() {
+				this.Restart('It`s a tie!');
+				this.complete = true;
+			}
+
+			Restart(message) {
+				var text = document.createElement('h');
+				text.id = 'win';
+				text.innerHTML = message;
+				var text2 = document.createElement('h1');
+				text2.innerHTML = `Click for new Game`;
+				text.appendChild(text2);
+				document.body.appendChild(text);
+				var div = document.createElement('div');
+				div.id = 'restart';
+				div.addEventListener('click', this.Clear.bind(this));
+				document.body.appendChild(div);
+			}
+
+			Clear() {
+				document.body.removeChild(document.getElementById('restart'));
+				document.body.removeChild(document.getElementById('win'));
+				for (var y = 0; y < this.cells.length; y++){
+					for (var x = 0; x < this.cells[y].length; x++) {
+						this.cells[y][x].innerHTML = '';
+						this.cells[y][x].style.color = '#eeeeee';
+					}
+				}
+				this.player = 'X';
+				this.complete = false;
+			}
+		}
+
+		function OnLoad() {
+			var field = new Field({ x: 3, y: 3 }, document.body, 2);
+			//var field2 = new Field({ x: 3, y: 3 }, document.body, 2);
+		}
+	</script>
+	<style>
+		html, body {
+			margin: 0;
+			padding: 0;
+			background-color: #14bdac;
+			text-align:center;
+		}
+		#TicTacToe {
+			background-color: #14bdac;
+			margin: 10% auto;
+			padding: 0;
+			border: 1px solid #008978;
+			border-spacing: 0;
+		}
+		.cell {
+			width: 100px;
+			height: 100px;
+			background-color: #14bdac;
+			border: 1px solid #008978;
+			color: #eeeeee;
+			font-size:500%;
+			font-family:'Arial';
+			font-weight:500;
+			text-align:center;
+		}
+			.cell:hover {
+				background-color: #18a293;
+			}
+
+		h {
+			color: #eeeeee;
+			font-size: 500%;
+			font-family: 'Arial';
+			font-weight: 500;
+			text-align: center;
+			position: absolute;
+			width: 100%;
+			top: 2%;
+			left: 0;
+			right: 0;
+			margin: 0 auto;
+		}
+
+		h1 {
+			color: #eeeeee;
+			font-size:40%;
+			font-family: 'Arial';
+			font-weight: 500;
+			text-align: center;
+			width: 100%;
+			margin: -1% 0;
+		}
+
+		#restart {
+			width:100%;
+			height:100%;
+			position:absolute;
+			z-index:10;
+			background-color:#eeeeee;
+			opacity:0.3;
+			top:0;
+			bottom:0;
+			left:0;
+			right:0;
+		}
+	</style>
+</head>
+<body onload="OnLoad()">
+
+</body>
+</html>

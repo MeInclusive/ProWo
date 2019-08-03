@@ -1,0 +1,20 @@
+HTML/CSS
+	HTML tags
+	CSS properties
+Chrome Entwicklertools
+Javascript
+	Variables
+	Datatypes
+		Array
+		Object
+	Operators
+	if/else statements
+	Loops
+	Functions
+		Parameter
+Chrome Entwicklertools Console
+Verbindung zu HTML und CSS
+	Canvas und Context
+	DOM-Events
+Das Spiel
+	Setup und Draw

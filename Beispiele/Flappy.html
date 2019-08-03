@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+<head>
+	<script>
+		var game;
+		function Start() {
+			game = new Game(document.getElementById('canvas'));
+		}
+
+		class Game {
+			constructor(canvas) {
+				this.canvas = canvas;
+				this.ctx = canvas.getContext('2d');
+				this.pipes = [];
+				for (var i = 0; i < this.canvas.width / 300; i++) {
+					var x = i*300,
+						y = Math.random() > 0.5 ? 'up' : 'down',
+						height = Math.round(Math.random() * this.canvas.height * 2 / 3);
+					this.pipes.push(new Pipe({ x: x, y: y }, height, this.ctx), new Pipe({ x: x, y: y == 'up' ? 'down' : 'up' }, this.canvas.height - height - 200, this.ctx));
+
+				}
+				this.flappy = new Flappy({ x: 100, y: 100 }, 20, this.ctx);
+				this.score = 0;
+				this.ctx.font= '30px Arial';
+				setInterval(function () {
+					if (this.complete) { return;}
+					var img = new Image(); img.src = "FlappyBackground.jpg";
+					this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+					this.flappy.Update();
+					this.flappy.Draw();
+					for (var i = 0; i < this.pipes.length; i++) {
+						this.pipes[i].position.x -= 5;
+						this.pipes[i].Draw();
+						if (this.pipes[i].Collision(this.flappy)) {
+							this.complete = true;
+							this.Restart('You Lost!');
+						}
+						if (this.pipes[i].position.x < -10 && i % 2 == 0) {
+							var x = this.pipes[this.pipes.length - 1].position.x + 300,
+								y = Math.random() > 0.5 ? 'up' : 'down',
+								height = Math.round(Math.random() * this.canvas.height * 2 / 3);
+							this.pipes.push(new Pipe({ x: x, y: y }, height, this.ctx), new Pipe({ x: x, y: y == 'up' ? 'down' : 'up' }, this.canvas.height - height -200, this.ctx));
+							this.pipes.splice(i, 2);
+						}
+						if (this.pipes[i].position.x == this.flappy.position.x && i%2==0) {
+							this.score++;
+						}
+					}
+					if (this.flappy.position.y + this.flappy.radius >= this.canvas.height || this.flappy.position.y - this.flappy.radius <= 0) {
+						this.complete = true;
+						this.Restart('You Lost!');
+					}
+					this.ctx.fillStyle = '#ffffff';
+					this.ctx.fillText(`score: ${this.score}`, this.canvas.width - 150, 50);
+				}.bind(this), 1000 / 60);
+			}
+
+			Restart(message) {
+				var text = document.createElement('h');
+				text.id = 'lost';
+				text.innerHTML = message;
+				var text2 = document.createElement('h1');
+				text2.innerHTML = `Click for new Game`;
+				text.appendChild(text2);
+				document.body.appendChild(text);
+				var div = document.createElement('div');
+				div.id = 'restart';
+				div.addEventListener('click', this.Clear.bind(this));
+				document.body.appendChild(div);
+			}
+
+			Clear() {
+				document.body.removeChild(document.getElementById('restart'));
+				document.body.removeChild(document.getElementById('lost'));
+				this.flappy.velocity = 0;
+				this.flappy.position.y = this.canvas.height / 2;
+				this.score = 0;
+				for (var i = 0; i < this.pipes.length; i++) {
+					this.pipes[i].position.x += this.canvas.width / 2;
+				}
+				this.complete = false;
+			}
+		}
+
+		class Flappy {
+			constructor(pos, radius, ctx) {
+				this.position = pos;
+				this.radius = radius;
+				this.velocity = 0;
+				this.ctx = ctx;
+				window.onkeydown = function (key) {
+					this.velocity = (key.keyCode == 32 ? -5 : this.velocity);
+				}.bind(this);
+			}
+
+			Update() {
+				this.position.y += this.velocity;
+				this.position.y = this.position.y + this.radius >= this.ctx.canvas.height ? this.ctx.canvas.height - this.radius : this.position.y - this.radius <= 0 ? this.radius : this.position.y;
+				this.velocity += 0.25;
+			}
+
+			Draw() {
+				var img = new Image(); img.src = 'bird.png';
+				this.ctx.drawImage(img, this.position.x - this.radius, this.position.y - this.radius, this.radius * 2, this.radius * 2)
+			}
+		}
+
+		class Pipe {
+			constructor(pos, height, ctx) {
+				this.position = pos;
+				this.height = height;
+				this.width = 30;
+				this.ctx = ctx;
+			}
+
+			Draw() {
+				var img = new Image(); img.src = 'pipe1.png';
+				this.ctx.drawImage(img, this.position.x - this.width / 2, this.position.y == 'up' ? 0 : this.ctx.canvas.height - this.height, this.width, this.height);
+				img = new Image(); img.src = 'pipe2.png';
+				this.ctx.drawImage(img, this.position.x - this.width / 2-3, this.position.y == 'up' ? this.height - this.width / 2 : this.ctx.canvas.height - this.height, this.width+6, this.width/2);
+			}
+
+			Collision(flappy) {
+				return flappy.position.x + flappy.radius > this.position.x - this.width / 2 && flappy.position.x - flappy.radius < this.position.x + this.width / 2 ? this.position.y == 'up' ? flappy.position.y - flappy.radius < this.height : flappy.position.y + flappy.radius > this.ctx.canvas.height - this.height : false;
+			}
+		}
+	</script>
+	<style>
+		h {
+			color: #eeeeee;
+			font-size: 500%;
+			font-family: 'Arial';
+			font-weight: 500;
+			text-align: center;
+			position: absolute;
+			width: 100%;
+			top: 2%;
+			left: 0;
+			right: 0;
+			margin: 0 auto;
+		}
+
+		h1 {
+			color: #eeeeee;
+			font-size: 40%;
+			font-family: 'Arial';
+			font-weight: 500;
+			text-align: center;
+			width: 100%;
+			margin: -1% 0;
+		}
+
+		#restart {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			z-index: 10;
+			background-color: #eeeeee;
+			opacity: 0.3;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
+
+	</style>
+</head>
+<body onload="Start()">
+	<canvas width=1300 height=600 id="canvas">
+
+	</canvas>
+</body>
+</html>

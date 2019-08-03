@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+	<script>
+		var canvas,
+			context;
+		function setup() {
+			//wird am Anfang des spieles ausgeführt
+			canvas = document.getElementById("canvas");
+			context = canvas.getContext("2d");
+
+			draw(); //ruft das erste mal draw auf
+		}
+
+		function draw() {
+			//wird jede Frame wiederholt
+			requestAnimationFrame(draw); //wiederholt draw eine Frame später
+		}
+	</script>
+</head>
+<body onload="setup()"> <!--Ruft setup auf, wenn der Körper des Html fertig geladen ist-->
+	<canvas id="canvas"></canvas>
+</body>
+</html>

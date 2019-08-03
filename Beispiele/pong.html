@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+	<script>
+		var canvas,
+			context;
+
+		function setup() {
+			setupCanvas();
+			window.onresize = setupCanvas;
+			window.onkeydown = function (key) {
+				console.log(key.keyCode);
+				switch (key.keyCode) {
+					case 38:
+						dir1 = -1;
+						break;
+					case 40:
+						dir1 = 1;
+						break;
+					case 87:
+						dir2 = -1;
+						break;
+					case 83:
+						dir2 = 1;
+						break;
+				}
+			}
+			draw();
+		}
+
+		function setupCanvas() {
+			canvas = document.getElementById('canvas');
+			canvas.width = document.body.clientWidth;
+			canvas.height = document.body.clientHeight;
+			context = canvas.getContext('2d');
+		}
+
+		var pos1 = 0,
+			dir1 = 0,
+			pos2 = 0,
+			dir2 = 0,
+			ballX = 0,
+			ballY = 0;
+
+		function draw() {
+			if (pos1 < -(canvas.clientHeight / 2) + 50 || pos1 > canvas.clientHeight / 2 - 50) {
+				dir1 *= -1;
+			}
+			if (pos2 < -(canvas.clientHeight / 2) + 50 || pos2 > canvas.clientHeight / 2 - 50) {
+				dir2 *= -1;
+			}
+			pos1 += dir1;
+			pos2 += dir2;
+
+			context.fillStyle = "#000000";
+			context.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+			context.fillStyle = '#ffffff';
+			context.fillRect(40, canvas.clientHeight / 2 + pos1 - 50, 70, 100);
+			context.fillRect(canvas.clientWidth - 40, canvas.clientHeight / 2 + pos2 - 50, -70, 100);
+
+			requestAnimationFrame(draw);
+		}
+	</script>
+	<style>
+		html, body {
+			margin:0;
+			padding:0;
+			width:100%;
+			height:100%;
+			overflow:hidden;
+		}
+	</style>
+</head>
+<body onload="setup()">
+	<canvas id="canvas">
+		Your browser doens't support the "canvas" html tag!
+	</canvas>
+</body>
+</html>

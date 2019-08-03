@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+	<script>
+		//Funktionen
+		function SuperTolleFunktion() {
+			//Inhalt wird ausgeführt
+		}
+
+		SuperTolleFunktion(); //führt die Funktion aus;
+		for (var i = 0; i < 5; i++) {
+			SuperTolleFunktion(); //führt die Funktion 5mal aus;
+		}
+
+		//Parameter
+		function FunktionMitParametern(a, b) {
+			//Mit den Parametern kann nun irgendwas angestellt werden
+		}
+
+		FunktionMitParametern(2, 3); // => 2 und 3 werden als Parameter an die Funktion als a und b übergeben
+
+		//Return
+		function plus(a, b) {
+			return a + b; // gibt den Wert von a + b zurück
+		}
+		plus(1, 2); // => 3
+		var ergebniss = plus(2, 5); // => 7
+
+		//Selbstaufrufende Funktionen
+		function f(i) {
+			if (i > 0) {
+				f(i - 1);
+			}
+		}
+
+		f(10); //Funktion f wiederholt sich 10 mal;
+	</script>
+</head>
+<body>
+</body>
+</html>
