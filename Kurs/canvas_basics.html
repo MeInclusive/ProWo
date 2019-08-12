@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, inital-scale=1.0">
+		<style type="text/css">
+			body {
+				background: rgb(40, 40, 40);
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+			}
+		</style>
+		<script type="text/javascript">
+			//since the html document is read from top to bottom and also executed
+			//that way we have to make a statement, that says wait until the body
+			//elsewise we can put the script after the canvas tag. With doing that
+			//we make sure the canvas element is created when our script is executed.
+			//Another option would be to create a canvas element inside our script.
+
+			//if we tried to access the canvas element like the following we would 
+			//get an error because the element has yet to be created.
+
+			let c = document.getElementById("canvas");
+
+			//waiting:
+			window.onload = function DoAfterWhenLoaded() {
+				//start your code
+			}
+
+			//body.onload is also possible to use.
+
+			//with document.createElement we can create elements
+			let canvas = document.createElement("canvas");
+			canvas.id = "canvas1";
+			body.appendChild(canvas);
+
+			//now we have craeted a canvas element and added it to the body.
+			
+			let context = canvas.getContext("2d");
+			
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+
+			//with that we can start our work.
+
+			
+		</script>
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>
+		<script type="text/javascript">
+			//with the script following after the canvas tag we don't have 
+			//to worry about the canvas tag not being created.
+
+			const c = document.getElementById("canvas");
+			const ctx = c.getContext("2d");
+
+			c.width = window.innerWidth;
+			c.height = window.innerHeight;
+
+			//this code runs perfectly fine. 
+			//You can see that I made the canvas full size, before it had neither
+			//width nor height.
+
+			//another thing to note is that the the point (0, 0) is in the top
+			//left of the window, while the point(c.width, c.height) is on the bottom
+			//right of the window.
+			//So when x grows bigger we come closer to the left and when
+			//y grows bigger we come close to the bottom.
+		</script>
+	</body>
+</html>
