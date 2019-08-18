@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, inital-scale=1.0">
+    <title>Javascript | Classes</title>+
+    <style media="screen">
+      body {
+        background: rgb(40, 40, 40);
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="300" height="300"></canvas>
+    <script type="text/javascript">
+      const c = document.getElementById("canvas");
+      const ctx = c.getContext("2d");
+
+      c.width = window.innerWidth;
+      c.height = window.innerHeight;
+
+      //When we want to program something, where we need a lot of similar objects
+      //then classes are the best option.
+      //for example we want 100 cars. One option would be to just create 100 cars.
+      //var car1 = {"color": "blue", "maxSpeed": 100}
+      //Now we can keep doing that for another 99 cars, or we create a class.
+
+      class Car {
+        constructor(color, maxSpeed) {
+          this.color = color;
+          this.maxSpeed = maxSpeed;
+        }
+
+        show() {
+          return `Car(${this.color}, ${this.maxSpeed})`
+        }
+      }
+
+      //with a class like that creating a new car is a easy as typing
+      let car = new Car("red", 20);
+      //and we can also use the show function from the class
+      console.log(car.show());
+      //the cunstroctor is a special function that is called, when the
+      //class object is craeted. "this" refers to the created Object.
+      //so we can get our color and maxSpeed with our car variable.
+      console.log(car.color);
+      console.log(car.maxSpeed);
+    </script>
+  </body>
+</html>
